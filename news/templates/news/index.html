@@ -1,0 +1,31 @@
+{% extends "news/base.html" %}
+
+{% block title %}All Stories - QuickNews{% endblock %}
+{% block content %}
+<div class="grid">
+  {% for article in articles %}
+  <article class="card">
+    <a href="{% url 'news:detail' article.pk %}" class="card-link">
+      {% if article.image %}
+      <div class="thumb">
+        <img src="{{ article.image.url }}" alt="{{ article.title }}">
+      </div>
+      {% else %}
+      <div class="thumb placeholder">No image</div>
+      {% endif %}
+    </a>
+
+    <div class="card-body">
+      <h2 class="article-headline">
+        <a href="{% url 'news:detail' article.pk %}">{{ article.title }}</a>
+      </h2>
+      <p class="summary">{{ article.summary|truncatechars:140 }}</p>
+      <p class="meta">{{ article.published_at|date:"M d, Y H:i" }}</p>
+    </div>
+  </article>
+  {% empty %}
+  <p>No stories yet. Add some from the admin panel.</p>
+  {% endfor %}
+</div>
+{% endblock %}
+ei

@@ -1,0 +1,17 @@
+{% extends "news/base.html" %}
+{% block title %}Login - QuickNews{% endblock %}
+{% block content %}
+<div class="auth-card">
+  <h2>Login</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <div class="form-row">{{ form.username }}</div>
+    <div class="form-row">{{ form.password }}</div>
+    <div class="form-row">
+      <button type="submit" class="btn">Login</button>
+    </div>
+  </form>
+  <p>Don't have an account? <a href="{% url 'news:register' %}">Register</a></p>
+</div>
+{% endblock %}

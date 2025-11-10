@@ -1,0 +1,39 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>{% block title %}News Platform{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'news/styles.css' %}">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-row">
+      <h1 class="logo"><a href="{% url 'news:index' %}">QuickNews</a></h1>
+      <nav class="auth-links">
+        {% if user.is_authenticated %}
+          <span>Hi, {{ user.username }}</span>
+          <form method="post" action="{% url 'news:logout' %}" style="display:inline">
+            {% csrf_token %}
+            <button type="submit" class="logout-button">Logout</button>
+          </form>
+        {% else %}
+          <a href="{% url 'news:login' %}">Login</a>
+          <a href="{% url 'news:register' %}">Register</a>
+        {% endif %}
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>I am so done with this project I won't do it again</p>
+    </div>
+  </footer>
+</body>
+</html>

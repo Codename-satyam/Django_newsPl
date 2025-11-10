@@ -1,0 +1,62 @@
+{% extends "news/base.html" %}
+{% block title %}{{ article.title }} - QuickNews{% endblock %}
+{% block content %}
+<article class="article-card">
+  <h2 class="article-headline">{{ article.title }}</h2>
+  <p class="article-meta">{{ article.published_at|date:"F d, Y H:i" }}</p>
+
+  {% if article.image %}
+  <div class="detail-image">
+    <img src="{{ article.image.url }}" alt="{{ article.title }}">
+  </div>
+  {% endif %}
+
+  <div class="content">
+    {% if article.content %}
+      {{ article.content|linebreaks }}
+    {% else %}
+      <p><em>No article content available.</em></p>
+    {% endif %}
+  </div>
+</article>
+
+<section class="feedback-section">
+  <h3>Leave feedback</h3>
+
+  {% if user.is_authenticated %}
+    <form method="post" action="">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      <div class="form-row">{{ form.message }}</div>
+      <div class="form-row">
+        <button type="submit" class="btn">Send feedback</button>
+      </div>
+    </form>
+  {% else %}
+    <form method="post" action="">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      <div class="form-row">{{ form.name }}</div>
+      <div class="form-row">{{ form.email }}</div>
+      <div class="form-row">{{ form.message }}</div>
+      <div class="form-row">
+        <button type="submit" class="btn">Send feedback</button>
+      </div>
+    </form>
+  {% endif %}
+</section>
+
+<h3>Feedbacks</h3>
+{% for fb in feedbacks %}
+  <div class="feedback">
+    <div class="fb-header">
+      <strong>{{ fb.name }}</strong>
+      <span class="fb-date">{{ fb.created_at|date:"M d, Y H:i" }}</span>
+    </div>
+    <div class="fb-body">{{ fb.message|linebreaks }}</div>
+  </div>
+{% empty %}
+  <p>No feedback yet. Be the first to share your thoughts.</p>
+{% endfor %}
+
+{% endblock %}
